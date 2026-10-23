@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What's for Dinner?</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍲</text></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>What's for Dinner?</h1>
+    <p class="subtitle">Recipes made for each person in your house</p>
+  </header>
+
+  <main>
+    <!-- Sign in -->
+    <section id="login-section" class="hidden">
+      <h2>Welcome! What's the family passphrase?</h2>
+      <form id="login-form" class="inline-form">
+        <input type="password" id="passphrase-input" placeholder="Passphrase" autocomplete="current-password" required>
+        <button type="submit" class="accent-btn">Let me in</button>
+      </form>
+      <div id="login-status" class="status-msg error hidden"></div>
+    </section>
+
+    <!-- Person Picker -->
+    <section id="profile-section" class="hidden">
+      <h2>Who's choosing tonight?</h2>
+      <div id="profile-grid"></div>
+      <div id="no-people" class="empty-state hidden">
+        <p>No one's here yet. Add the people in your house and what they like to eat.</p>
+        <button id="first-person-btn" class="primary-btn">Add people</button>
+      </div>
+      <div class="home-links">
+        <button id="saved-recipes-btn" class="link-btn">Saved recipes</button>
+        <button id="admin-btn" class="link-btn">People &amp; settings</button>
+        <button id="logout-btn" class="link-btn">Sign out</button>
+      </div>
+    </section>
+
+    <!-- This Week's Plan -->
+    <section id="weekly-order-section" class="hidden">
+      <h2>This Week's Plan</h2>
+      <div id="weekly-order-list"></div>
+      <p id="no-orders" class="muted">Nothing planned yet. Pick a recipe and add it to this week's plan.</p>
+      <div id="weekly-order-actions" class="hidden">
+        <button id="view-weekly-shopping-btn" class="primary-btn">View combined shopping list</button>
+        <button id="clear-weekly-order" class="secondary-btn">Clear week</button>
+      </div>
+    </section>
+
+    <!-- People & Settings -->
+    <section id="admin-section" class="hidden">
+      <div class="section-header">
+        <button id="back-from-admin" class="back-btn">&larr; Back</button>
+        <h2>People &amp; Settings</h2>
+      </div>
+
+      <div class="edit-card">
+        <div class="edit-card-header"><strong>🏠 Household</strong></div>
+        <label for="household-locale">Where you are</label>
+        <input type="text" id="household-locale" class="field" placeholder="e.g. UK, metric units">
+        <label for="household-servings">Default servings</label>
+        <input type="number" id="household-servings" class="field narrow" min="1" max="20">
+        <label for="household-rules">House rules (apply to everyone)</label>
+        <textarea id="household-rules" class="field" rows="3" placeholder="e.g. Every meal should include a vegetable. We're vegetarian Monday to Thursday. Nothing that takes over an hour on weeknights."></textarea>
+        <div class="edit-card-actions">
+          <button id="save-household-btn" class="primary-btn small">Save household</button>
+          <span class="save-note hidden"></span>
+        </div>
+      </div>
+
+      <h3 class="people-heading">People</h3>
+      <div id="person-forms"></div>
+      <button id="add-person-btn" class="secondary-btn">+ Add a person</button>
+    </section>
+
+    <!-- Saved Recipes -->
+    <section id="saved-section" class="hidden">
+      <div class="section-header">
+        <button id="back-from-saved" class="back-btn">&larr; Back</button>
+        <h2>Saved Recipes</h2>
+      </div>
+      <div id="saved-grid"></div>
+      <p id="no-saved" class="muted center hidden">No saved recipes yet. Every recipe you make appears here.</p>
+    </section>
+
+    <!-- Suggestions -->
+    <section id="suggestions-section" class="hidden">
+      <div class="section-header">
+        <button id="back-to-profiles" class="back-btn">&larr; Back</button>
+        <h2 id="suggestions-title">What do you fancy?</h2>
+      </div>
+      <div id="suggestions-grid"></div>
+      <div id="suggestions-loading" class="hidden">
+        <div class="loader"></div>
+        <span>Thinking up some ideas...</span>
+      </div>
+      <div class="mood-form">
+        <input type="text" id="mood-input" placeholder="Not feeling these? Describe what you're in the mood for...">
+        <div class="mood-buttons">
+          <button id="show-more-btn" class="accent-btn">Show me ideas</button>
+          <button id="make-this-btn" class="secondary-btn">Just make this</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ingredients -->
+    <section id="ingredient-section" class="hidden">
+      <div class="recipe-title-bar">
+        <h2><span id="recipe-emoji"></span> <span id="selected-recipe-name"></span></h2>
+        <div class="title-actions">
+          <button id="add-to-weekly-btn" class="weekly-btn">+ This week</button>
+          <button id="print-recipe-btn" class="print-btn">🖨️ Print</button>
+        </div>
+      </div>
+      <p id="selected-description" class="recipe-description"></p>
+      <div id="selected-timing"></div>
+      <p class="serving-info">Serves <span id="selected-servings"></span> · untick anything you already have</p>
+      <div id="ingredient-list"></div>
+      <div class="actions">
+        <button id="copy-list-btn" class="primary-btn">📋 Copy shopping list</button>
+      </div>
+    </section>
+
+    <!-- Method -->
+    <section id="method-section" class="hidden">
+      <h2>👨‍🍳 Method</h2>
+      <ol id="method-list"></ol>
+      <div class="tweak-form">
+        <input type="text" id="tweak-input" placeholder="Change something, e.g. 'substitute the mushrooms, please'">
+        <button id="tweak-btn" class="accent-btn">Update recipe</button>
+      </div>
+      <div id="tweak-status" class="status-msg hidden"></div>
+    </section>
+
+    <!-- Store Cupboard -->
+    <section id="cupboard-section" class="hidden">
+      <h2>Store Cupboard</h2>
+      <p class="muted small-text">Things you've unticked as "already have" stay unticked in future recipes.</p>
+      <div id="cupboard-items"></div>
+      <button id="clear-cupboard" class="secondary-btn">Clear all</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
